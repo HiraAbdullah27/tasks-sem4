@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Story Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container {% if story_output %}split{% endif %}">
+        <div class="form-section">
+            <h1>AI Story Generator</h1>
+            <form method="POST">
+                <label for="story_input">Story Starter</label>
+                <textarea id="story_input" name="story_input" required>{{ request.form.story_input or '' }}</textarea>
+
+                <label for="genre">Genre</label>
+                <select id="genre" name="genre">
+                    <option value="">-- Select Genre --</option>
+                    <option value="Fantasy" {% if request.form.genre == "Fantasy" %}selected{% endif %}>Fantasy</option>
+                    <option value="Science Fiction" {% if request.form.genre == "Science Fiction" %}selected{% endif %}>Science Fiction</option>
+                    <option value="Mystery" {% if request.form.genre == "Mystery" %}selected{% endif %}>Mystery</option>
+                    <option value="Romance" {% if request.form.genre == "Romance" %}selected{% endif %}>Romance</option>
+                    <option value="Horror" {% if request.form.genre == "Horror" %}selected{% endif %}>Horror</option>
+                    <option value="Adventure" {% if request.form.genre == "Adventure" %}selected{% endif %}>Adventure</option>
+                </select>
+
+                <label for="tone">Tone</label>
+                <select id="tone" name="tone">
+                    <option value="">-- Select Tone --</option>
+                    <option value="Light-hearted" {% if request.form.tone == "Light-hearted" %}selected{% endif %}>Light-hearted</option>
+                    <option value="Dark" {% if request.form.tone == "Dark" %}selected{% endif %}>Dark</option>
+                    <option value="Comedic" {% if request.form.tone == "Comedic" %}selected{% endif %}>Comedic</option>
+                    <option value="Serious" {% if request.form.tone == "Serious" %}selected{% endif %}>Serious</option>
+                    <option value="Whimsical" {% if request.form.tone == "Whimsical" %}selected{% endif %}>Whimsical</option>
+                    <option value="Suspenseful" {% if request.form.tone == "Suspenseful" %}selected{% endif %}>Suspenseful</option>
+                </select>
+
+                <label for="setting">Setting</label>
+                <input type="text" id="setting" name="setting" value="{{ request.form.setting or '' }}">
+
+                <label for="characters">Characters</label>
+                <input type="text" id="characters" name="characters" value="{{ request.form.characters or '' }}">
+
+                <button type="submit">Generate Story</button>
+            </form>
+        </div>
+
+        {% if story_output %}
+        <div class="output-section">
+            <h2>Generated Story</h2>
+
+            {% if story_title %}
+                <h3 class="story-title">{{ story_title }}</h3>
+            {% endif %}
+
+            <div class="story-box">
+                <p>{{ story_output }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
