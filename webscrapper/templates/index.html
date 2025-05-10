@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Extractor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Email Extractor from Website</h1>
+        <form method="POST">
+            <label for="company">Company Name:</label>
+            <input type="text" name="company" id="company" required>
+
+            <label for="url">Website URL:</label>
+            <input type="url" name="url" id="url" placeholder="https://example.com" required>
+
+            <button type="submit">Extract Emails</button>
+        </form>
+
+        {% if results %}
+        <h2>Result</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>URL</th>
+                    <th>Emails</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in results %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td><a href="{{ row[1] }}" target="_blank">{{ row[1] }}</a></td>
+                    <td>{{ row[2] | join(', ') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</body>
+</html>
