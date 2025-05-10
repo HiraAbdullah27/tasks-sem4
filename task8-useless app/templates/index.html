@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Useless Fun Fact App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>🧠 Useless Fun Fact App</h1>
+
+    <div class="card">
+        <h2>🌞 Fact of the Day</h2>
+        <p class="fact">{{ fact }}</p>
+    </div>
+
+    <div class="card">
+        <h2>Random Fun Fact</h2>
+        <button onclick="getRandomFact()">Get Random Fact</button>
+        <p id="random-fact-output" class="fact"></p>
+    </div>
+
+    <div class="card">
+        <h2>Random Advice</h2>
+        <button onclick="getRandomAdvice()">Get Random Advice</button>
+        <p id="random-advice-output" class="advice"></p>
+    </div>
+
+
+    <div class="card">
+        <h2>📝 Submit Your Own Fun Fact</h2>
+        <form id="submit-form">
+            <input type="text" id="new-fact" placeholder="Enter your fun fact here..." required>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="submit-msg"></p>
+    </div>
+
+    <script>
+        function getRandomFact() {
+            fetch('/api/random-fact')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("random-fact-output").innerText = data.fact;
+                });
+        }
+
+        function getRandomAdvice() {
+            fetch('/api/random-advice')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("random-advice-output").innerText = data.advice;
+                });
+        }
+
+        document.getElementById("submit-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const fact = document.getElementById("fact-input").value;
+            fetch("/api/submit-fact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ fact: fact })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response-msg").innerText = data.message;
+                document.getElementById("fact-input").value = "";
+            });
+        });
+    </script>
+
+    
+
+    
+</body>
+</html>
